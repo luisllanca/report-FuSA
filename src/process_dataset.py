@@ -28,11 +28,8 @@ def process_mnist(input_dir, output_dir):
     print(f"Dataset procesado guardado en: {output_dir}")
 
 if __name__ == "__main__":
-    # Configuración de argumentos de línea de comandos
     parser = argparse.ArgumentParser(description="Procesar el dataset MNIST.")
     parser.add_argument("--input_dir", type=str, required=True, help="Ruta de entrada del dataset MNIST.")
     parser.add_argument("--output_dir", type=str, required=True, help="Ruta donde se guardará el dataset procesado.")
     args = parser.parse_args()
-
-    # Llamar a la función principal
     process_mnist(args.input_dir, args.output_dir)

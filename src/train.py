@@ -7,21 +7,15 @@ from model import SimpleMNISTModel
 from pathlib import Path
 
 def train(data_dir, model_dir, epochs=5, batch_size=64, lr=0.001):
-    """
-    Entrena un modelo con el dataset MNIST procesado.
-    """
-    # Cargar el dataset procesado
+    
     train_dataset = torch.load(f"{data_dir}/mnist_train.pt")
 
-    # Crear DataLoader
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
-    # Inicializar modelo, pérdida y optimizador
     model = SimpleMNISTModel()
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
 
-    # Entrenar el modelo
     model.train()
     for epoch in range(epochs):
         total_loss = 0
@@ -34,7 +28,6 @@ def train(data_dir, model_dir, epochs=5, batch_size=64, lr=0.001):
             total_loss += loss.item()
         print(f"Epoch {epoch + 1}/{epochs}, Loss: {total_loss / len(train_loader):.4f}")
 
-    # Guardar el modelo entrenado
     Path(model_dir).mkdir(parents=True, exist_ok=True)
     torch.save(model.state_dict(), f"{model_dir}/mnist_model.pth")
     print(f"Modelo guardado en {model_dir}/mnist_model.pth")

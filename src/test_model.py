@@ -7,19 +7,13 @@ import numpy as np
 from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
 
 def test(data_dir, model_path, metrics_path, plot_path):
-    """
-    Prueba el modelo entrenado y guarda métricas y gráficos.
-    """
-    # Cargar el dataset de prueba procesado
     test_dataset = torch.load(f"{data_dir}/mnist_test.pt")
     test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
 
-    # Cargar el modelo entrenado
     model = SimpleMNISTModel()
     model.load_state_dict(torch.load(model_path))
     model.eval()
 
-    # Evaluar el modelo
     all_labels = []
     all_predictions = []
     correct = 0
@@ -37,11 +31,9 @@ def test(data_dir, model_path, metrics_path, plot_path):
     accuracy = 100 * correct / total
     print(f"Accuracy: {accuracy:.2f}%")
 
-    # Guardar métricas
     with open(metrics_path, "w") as f:
         f.write(f"accuracy: {accuracy:.2f}\n")
 
-    # Crear y guardar una matriz de confusión
     cm = confusion_matrix(all_labels, all_predictions, labels=np.arange(10))
     disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=np.arange(10))
     disp.plot(cmap="Blues")
