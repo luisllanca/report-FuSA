@@ -1,0 +1,28 @@
+stages:
+  preprocess:
+    cmd: python src/process_dataset.py --input_dir data --output_dir process_data
+    deps:
+    - data
+    - src/process_dataset.py
+    outs:
+    - process_data/
+  train:
+    cmd: python src/train.py --data_dir process_data --model_dir models
+    deps:
+    - process_data
+    - src/model.py
+    - src/train.py
+    outs:
+    - models/mnist_model.pth
+  test:
+    cmd: python src/test_model.py --data_dir process_data --model_path models/mnist_model.pth
+      --metrics_path metrics.json --plot_path plots/confusion_matrix.png
+    deps:
+    - models/mnist_model.pth
+    - process_data/
+    - src/test_model.py
+    metrics:
+    - metrics.json:
+        cache: false
+    outs:
+    - plots/confusion_matrix.png
